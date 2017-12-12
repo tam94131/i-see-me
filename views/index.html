@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>I See Me</title>
+    <link rel="icon" href="images/eyeball.png">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- STYLESHEETS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- HAVE TO INCLUDE VALIDATOR TO USE VALIDATOR!!!! THIS THING TOOK ME AN HOUR TO SOLVE -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
+    <link rel="stylesheet" href="./styles/styles.css">
+
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Orbitron|Oswald" rel="stylesheet">
+
+    <!-- APPLICATION SCRIPTS -->
+
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--
+    <script src="./scripts/handlebars-v4.0.10.js"></script>
+    -->
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <!--
+    <script src="./scripts/authen.js"></script>
+    -->
+    <script src="./scripts/fitness.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['gauge']});
+      google.charts.load('current', {'packages':['corechart']});
+    </script>
+    <script src="./scripts/app.js"></script>
+
+</head>
+
+<body>
+    <!-- NAV BAR -->
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+        &nbsp;&nbsp;<img height=45 src="images/eyeball.png" />
+        <button id="log-in-btn" class="btn-primary pull-right">Log in</button>
+        <button id="create-btn" class="btn-primary pull-right">Sign up</button>
+        <button id="log-out-btn" class="btn-primary pull-right" style="display:none">Log out</button>
+        <button id="update-pic-btn" class="btn-primary pull-right" style="display:none">Images</button>
+    </nav>
+
+    <!-- JUMBOTRON -->
+    <header class="jumbotron" style="display:none">
+        <div class="row">
+            <div class="img"></div>
+                <div class="col-md-7 col-xs-7">
+                    <div class="container">
+                        <h1>I See Me</h1>
+                        <p style="color: #ffa54f">Automatic Photograph Curation</p>
+                    </div>
+                </div>
+            <div class="col-md-5 col-xs-5">
+                <img height=300 src="images/eyeball.png" />
+            </div>
+        </div>
+    </header>
+
+    <!-- BEGIN FORM SAMPLE -->
+    <div id="panel-body">
+        <!-- BEGIN BUILTIN CONTENT -->
+        <div id="built-in-content" style="display:none">
+            <div class="row">
+                <div class="col-md-5 col-md-offset-1">
+                    <p class="copytext"><strong>I See Me</strong>
+                    automatically curates those pictures that represent your most important moments.</p>
+                    <p class="copytext">It does this by analyzing your pictures and selecting those with the highest experiential value.</p>
+                    <p class="copytext">Cognitive science tells us
+                    that experiential value is highest when something is beyond the routine.  In particular, in the presense of novelty and emotion.
+                    </p>
+                </div>
+                <div class="col-md-5 copytext">
+                    <p class="copytext"><strong>I See Me</strong>
+                    is powered by the Google Vision image AI engine to discover:</p>
+                    <ul><li>Landmarks - Personal photographs of landmarks are often both novel and emotional.
+                    </li>
+                    <li>Microexpressions - Four of the basic emotions can be detected.</li>
+                    <li>Entity features - Although these don't have much experiential value, features provide context.</li></ul>
+                    <p class="copytext">Best of all, this discovery is automatic.  You just provide the photographs!</p>
+                </div>
+            </div>
+        </div>
+        <!-- END BUILTIN CONTENT -->
+
+        <!-- LOG IN FORM START -->
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+                <div class="col-md-8 col-xs-8 col-md-offset-2" id="log-in-panel" style="display:none">
+                    <h2>Welcome! Please log in</h2>
+                    <form class="form-horizontal" id="log-in-submit">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="userId">User ID:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="userId" placeholder="Enter ID">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="pwd">Password:</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" name="pwd" placeholder="Enter password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- LOG IN FORM END -->
+
+        <!-- CREATE PROFILE FORM START -->
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+
+                <div id="create-form-panel" style="display:none">
+                    <h2>Create New Account</h2>
+                    <form class="form-horizontal" id="create-form" role="form" data-toggle="validator">
+
+                        <div class="col-md-6 col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="name">Name:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="name" placeholder="E.g., John Smith" minlength=6 required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="filter">Filter:</label>
+                                <div class="col-sm-3">
+                                    <input type="number" class="form-control" name="filter" placeholder="(optional)">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="userId">User ID:</label>
+                                <div class="col-sm-9">
+                                    <input id="create-id" type="text" class="form-control" name="userId" placeholder="E.g., user1234 (no spaces)" minlength=6 required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="pwd">Password:</label>
+                                <div class="col-sm-9">
+                                    <input id="create-pwd" type="password" class="form-control" name="pwd" placeholder="Minimum of 8 characters" minlength=8 required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="pwd">Confirm Password:</label>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control" name="confirm-pwd" placeholder="Must be the same" data-match="#create-pwd" data-match-error="Whoops, these don't match" required>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="preferences">Preferences:</label>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <select class="form-control" name="preferences">
+                                            <option value="verbose">Verbose</option>
+                                            <option value="terse">Terse</option>
+                                            <option value="none" selected>None</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- CREATE FORM END -->
+
+            <!-- BEGIN ADMIN PANEL
+            <div id="admin-panel" class="row" style="display:none; background-color: #ffa54f;">
+              <div class="col-md-10 col-md-offset-1">
+                <h1 class="text-center">Dashboard</h1>
+                  <table border=2>
+                      <tr>
+                          <td>Total numb users</td>
+                          <td>Total numb rec'd pics</td>
+                          <td>Gender breakdown</td>
+                          <td>Avg pic</td>
+                      </tr>
+                      <tr>
+                          <td><span id="db1">100</span></td>
+                          <td><span id="db2">515</span></td>
+                          <td><span id="db3">30</span>% M /
+                              <span id="db4">70</span>% F /
+                              <span id="db5">0 </span>% O</td>
+                          <td><span id="db6">160</span> lbs</td>
+                      </tr>
+                  </table>
+              </div>
+            </div>
+            ADMIN PANEL END -->
+
+            <!-- Recommendation START -->
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div id="recommendation" style="display:none">
+
+                        <!-- first row -->
+                        <div class="row" style="margin-top:10px">
+                            <div class="col-md-5 col-xs-12">
+                                <h1>Reflections for <span id="user-name"></span></h1>
+                            </div>
+
+                            <div class="col-md-7 col-xs-12" style="margin-top: 30px">
+                                                            
+                                <!--
+                                    <div class="row" id="show-pic" style="display:">
+                                    <p style="display: inline-block; font-size: 18px">Current pic: <span id="picSpan"></span></p>
+                                    <button id="update-pic-btn" class="btn btn-default" type="button" style="margin-left: 10px">update </button>
+                                </div>
+                                -->
+
+                                <div id="new-pic" style="display:none">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <p>Select pictures that are personal to you for best results.  You may have a maximum of 100 pictures.</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <form id="update-pic" method="post" enctype="multipart/form-data">
+
+                                            <div class="col-sm-5">
+                                                <label class="control-label" for="pic" style="font-size: 18px">New pictures:</label>
+                                                <input id="filetoupload" type="file" name="pic" required>
+                                            </div>
+
+                                            <div class="col-sm-5">
+                                                <label class="control-label" for="title" style="font-size: 18px">Title:</label><br>
+                                                <input id="pic-title" type="text" name="title" required>
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <input type="submit" class="btn btn-default" value="Submit">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!--
+                                <div class="row" id="show-preferences" style="display:">
+                                    <p style="display: inline-block; font-size: 18px">Preferences: <span id="preferencesSpan"></span></p>
+                                    <button id="update-preferences-btn" class="btn btn-default" type="button" style="margin-left: 10px">update </button>
+                                </div>
+                                <div class="row">
+                                    <div id="new-preferences" style="display:none">
+                                        <form id="update-preferences">
+                                            <label class="control-label col-sm-3" for="preferences" style="font-size: 18px">Change preferences:</label>
+                                            <div class="col-sm-4">
+                                                <select class="form-control" name="preferences">
+                                                    <option value="verbose">Verbose</option>
+                                                    <option value="terse">Terse</option>
+                                                    <option value="none" selected>None</option>
+                                                </select>
+                                            </div>
+                                            <input type="submit" class="btn btn-default" style="margin-left: 10px" value="Submit">
+                                        </form>
+                                    </div>
+                                </div>
+                                -->
+                            </div>  <!--form column-->
+                        </div>      <!--reflections/form row-->
+
+                        <!-- second row -->
+                        <div class="row" >
+                            <div class="col-md-5 col-xs-12 bmi-chart">
+                                <h2>Summary</h2>
+                                <div class="row">
+                                    <div class="col-md-6 col-md-offset-2" id="summary"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-7 col-xs-12 line-chart">
+                                <h2>Curated</h2>
+                                <div class="row">
+                                    <div class="col-md-8 col-md-offset-1" id="curated"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- third row -->
+                        <div class="row" style="margin-top:40px">
+                            <div class="col-md-8 col-xs-12 col-md-offset-2 recBlock">
+                                <div class="col-md-12 recTitle">
+                                    <h2 class="text-center">My pics</h2>
+                                </div>
+                                <div class="col-md-12 recContent" id="rec-people">
+                                </div>
+                            </div>
+                            <!--
+                            <div class="col-md-4 col-xs-12 recBlock ">
+                                <div class="col-md-12 recTitle">
+                                    <h1 class="text-center">Landmarks</h1>
+                                </div>
+                                <div class="col-md-12 recContent" id="rec-landmarks">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-xs-12 recBlock">
+                                <div class="col-md-12 recTitle">
+                                    <h1 class="text-center">Things</h1>
+                                </div>
+                                <div class="col-md-12 recContent" id="rec-things">
+                                </div>
+                            </div>
+                            </div>
+                            -->
+                        </div>
+                        <!-- end of third row -->
+
+                    </div>
+                </div>
+            </div>
+            <!-- Recommendation END -->
+
+        </div>
+    </div>
+    <!-- end of panel-body -->
+
+    <footer>
+        <p style="text-align: center; padding-top: 20px;">Made by: 
+          <a target="_blank" href="https://tam94131.github.io/">Tahl Milburn</a><br>
+          @General Assembly 2017
+        </p>
+    </footer>
+</body>
+</html>
