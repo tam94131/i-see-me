@@ -23,16 +23,14 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!--
     <script src="./scripts/handlebars-v4.0.10.js"></script>
-    -->
     <script src="https://www.gstatic.com/charts/loader.js"></script>
-    <!--
     <script src="./scripts/authen.js"></script>
-    -->
     <script src="./scripts/fitness.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['gauge']});
       google.charts.load('current', {'packages':['corechart']});
     </script>
+    -->
     <script src="./scripts/app.js"></script>
 
 </head>
@@ -44,7 +42,7 @@
         <button id="log-in-btn" class="btn-primary pull-right">Log in</button>
         <button id="create-btn" class="btn-primary pull-right">Sign up</button>
         <button id="log-out-btn" class="btn-primary pull-right" style="display:none">Log out</button>
-        <button id="update-pic-btn" class="btn-primary pull-right" style="display:none">Images</button>
+        <button id="update-pic-btn" class="btn-primary pull-right" style="display:none">Upload</button>
     </nav>
 
     <!-- JUMBOTRON -->
@@ -181,30 +179,6 @@
             </div>
             <!-- CREATE FORM END -->
 
-            <!-- BEGIN ADMIN PANEL
-            <div id="admin-panel" class="row" style="display:none; background-color: #ffa54f;">
-              <div class="col-md-10 col-md-offset-1">
-                <h1 class="text-center">Dashboard</h1>
-                  <table border=2>
-                      <tr>
-                          <td>Total numb users</td>
-                          <td>Total numb rec'd pics</td>
-                          <td>Gender breakdown</td>
-                          <td>Avg pic</td>
-                      </tr>
-                      <tr>
-                          <td><span id="db1">100</span></td>
-                          <td><span id="db2">515</span></td>
-                          <td><span id="db3">30</span>% M /
-                              <span id="db4">70</span>% F /
-                              <span id="db5">0 </span>% O</td>
-                          <td><span id="db6">160</span> lbs</td>
-                      </tr>
-                  </table>
-              </div>
-            </div>
-            ADMIN PANEL END -->
-
             <!-- Recommendation START -->
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
@@ -218,13 +192,6 @@
 
                             <div class="col-md-7 col-xs-12" style="margin-top: 30px">
                                                             
-                                <!--
-                                    <div class="row" id="show-pic" style="display:">
-                                    <p style="display: inline-block; font-size: 18px">Current pic: <span id="picSpan"></span></p>
-                                    <button id="update-pic-btn" class="btn btn-default" type="button" style="margin-left: 10px">update </button>
-                                </div>
-                                -->
-
                                 <div id="new-pic" style="display:none">
                                     <div class="row">
                                         <div class="col-sm-12">
@@ -241,7 +208,7 @@
 
                                             <div class="col-sm-5">
                                                 <label class="control-label" for="title" style="font-size: 18px">Title:</label><br>
-                                                <input id="pic-title" type="text" name="title" required>
+                                                <input id="picTitle" type="text" name="title" required>
                                             </div>
 
                                             <div class="col-sm-2">
@@ -251,27 +218,6 @@
                                     </div>
                                 </div>
 
-                                <!--
-                                <div class="row" id="show-preferences" style="display:">
-                                    <p style="display: inline-block; font-size: 18px">Preferences: <span id="preferencesSpan"></span></p>
-                                    <button id="update-preferences-btn" class="btn btn-default" type="button" style="margin-left: 10px">update </button>
-                                </div>
-                                <div class="row">
-                                    <div id="new-preferences" style="display:none">
-                                        <form id="update-preferences">
-                                            <label class="control-label col-sm-3" for="preferences" style="font-size: 18px">Change preferences:</label>
-                                            <div class="col-sm-4">
-                                                <select class="form-control" name="preferences">
-                                                    <option value="verbose">Verbose</option>
-                                                    <option value="terse">Terse</option>
-                                                    <option value="none" selected>None</option>
-                                                </select>
-                                            </div>
-                                            <input type="submit" class="btn btn-default" style="margin-left: 10px" value="Submit">
-                                        </form>
-                                    </div>
-                                </div>
-                                -->
                             </div>  <!--form column-->
                         </div>      <!--reflections/form row-->
 
@@ -284,7 +230,7 @@
                                 </div>
                             </div>
                             <div class="col-md-7 col-xs-12 line-chart">
-                                <h2>Curated</h2>
+                                <h2>Curated (max <span id="curatedMax"></span>)</h2>
                                 <div class="row">
                                     <div class="col-md-8 col-md-offset-1" id="curated"></div>
                                 </div>

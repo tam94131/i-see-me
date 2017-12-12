@@ -1,5 +1,5 @@
 const fetchJson = require('node-fetch-json');
-var formidable = require('formidable');
+// var formidable = require('formidable');
 var db = require('../models');
 
 //Google Cloud stuff
@@ -129,8 +129,26 @@ function fileUpload(req,res) {
     .catch(err => {
       console.error('ERROR upload pic to cloud',err);
     });
+}
 
-  // console.log("CONT2",req.body);
+function fileUpload1(req,res) {
+  console.log("CONT2",req.body);
+
+  var form = new formidable.IncomingForm();
+  form.parse(req, function (err, fields, files) {
+      console.log("1",err);
+      console.log("2",fields);
+      console.log("3",files);
+      // var oldpath = files.filetoupload.path;
+      // var newpath = 'C:/Users/Your Name/' + files.filetoupload.name;
+      // fs.rename(oldpath, newpath, function (err) {
+      //   if (err) throw err;
+      //   res.write('File uploaded and moved!');
+      //   res.end();
+  });
+
+
+
   // var form = new formidable.IncomingForm();
   // form.parse(req)
   //   .on('file', function(name, file) {

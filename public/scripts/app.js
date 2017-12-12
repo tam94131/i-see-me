@@ -1,64 +1,90 @@
 //user profile stored here once logged in
 let currentUser = {};
-//user pic history stored here once logged in
-// let currentPicHistory = {};
 //this is a summary of across all the pics
 let summaryAllPics = {};
 let scoreAllPics = 0;
 //array of all pics objects for user
 let userPics = [];
-//Admin account
-// let adminArray = ["tam94131"];
 const THRESH = 0.65;        //confidence threshold on recogition
+const MAXCURATED = 5;
+
+//Google Cloud stuff
+// const Storage = require('@google-cloud/storage');
+// const cred = {
+//   "type": "service_account",
+//   "project_id": "i-see-me-188119",
+//   "private_key_id": "98dc71f42b1e0277098961ca1e2e6400de3c8a1c",
+//   "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCktzq69TbENkPY\nVnoMKxmokDRPWBOiyl8f47/ICLJYXvqZfj8PckS0wnp1soHSoO7Dazwp3WFJYQ3Y\nSUbQ2Yj5hQvjiLtJf6o927UDibMSpn2wSSv5X39x4sr7s6mvQiyTlUGa0kj5vjxM\nUkDBoWi8074tgAxU/pS1ZJL+2sHInkR1Pltrx+YruDQIdHhH3LSwG3ER3eOANVFd\n7yJXhYcmGzKZ62clxgaa/4h3GfkF2zJBLJ/tJMB4a8Rx5uGmk1gKfO05UlcAUYyF\nDxszGFJBq6DeuEmAPXpx+ktcXQT+tvPQ1a2X/uvU0A+0BP8LoNNkJ5eW7SuTHYKG\nfJz9eyC9AgMBAAECggEAGH4KZJxrzVdIVVXehgquoQr4TEgLe2xeIq7J6KOqaUuO\nNd6438IdB0fXz8KAXWKCvlomsw7xFWkyFtQmjI2cOYYYE3hUaQRruxD9ZI5IK2DI\nVbs7p7QUjkmr5yt68s2DNVq/S5czNLed3bdpW6F1ooZVxAxDSSwlzqcq2GyM3hi1\nQEbDA1fYidrbdsDe+cNwe6a1uLL1Kbh0ge+iPtzNV83Tjisb9VVSJiq0bSnK52c+\nUMkTxsSQQP5brNUZstVdbtMkjmqZLTMeGdWBJOUeskqMKXJ8ywctwZGbhq3CZr7C\ngvJFxMHfKZfecUysmM+0Qs74T8V+kc1nHnyTN/8c/QKBgQDhABLw3qf4QPX465xb\nueZZ/G8eeIMh3wbSvRH2EEoq9wHHlSdsXKu/Etv8OwF8lMcqpM06kSG7/l0MZFUS\n1wmyfBtyWxzLYuxJ2YY6RKepEHep9eccxuueYNpI1yTH4I284ScpQaiem/7SaAYZ\nJVPiCHxXnhIzvyRvycxvXrZnMwKBgQC7aN/83ytVZuZX95xoP2eLdNScYWG/bnAw\ni0Qy2+RSlF2ACN9ZehNU3TRfBxqB0md/HJykfXHFTzH7Wffg8EtoBvHFOS19v+gM\n3uBboKXk+L4bHAa7kOQi0X1lk5urC0TKje/pAK4z6W3Ol1WrkVX6TXol+MFfTBsY\nQbNdVmmYTwKBgQCppMmjLO3OgwQyc0sH6elhbbBGdCzC7AqT+BRDx9J0BJsl5TK9\nRD4GKe0Nh1u+l9p3L5zBjM23lbiIcFmog9P+7A4xsbrLKsHniIfpBPy4vv7KeeqQ\nSvc6CeJrSzOjNI8Jm2VQeP3u4MVH1UDL0tYlNaqy0S7+Lx8E3k0yp2G1+wKBgQCM\nrNqFjFeQ0Z7SJVHIht+ItPfrMsYW1iVsqv1UV+75ddkBhKdzGMluCGWJd2GUVYXO\nyoFij69Y9muESzJgLL/NpHjTHGpjXCwpjRtIbDxatcStwMnk/Yvh/vJrzvMo31qR\n2R1e/13EJdKBIuPx1zR8oK+x1RoCGLS17ote4sB8zQKBgGF3+32MEGMMqhehk9R5\nddECroFbYRg2gtekrSkn3uMjMYhOeGjY3gyG4lD3B4l1or8CLCRrk1ldZqoFV6J3\nRozNJg5RcxmBJ+zIXOlK6pZDU29NSGQyr4uuASgzWHZeaM8UAzw1CgdyOkXcR129\n5mxfY6+kFJpGEX/e3EFHZJ09\n-----END PRIVATE KEY-----\n",
+//   "client_email": "i-see-me@i-see-me-188119.iam.gserviceaccount.com",
+//   "client_id": "103437408985285771731",
+//   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+//   "token_uri": "https://accounts.google.com/o/oauth2/token",
+//   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+//   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/i-see-me%40i-see-me-188119.iam.gserviceaccount.com"
+// }
+// const projectId = 'i-see-me-188119'; 
+// const storage = new Storage({
+//     credentials: cred,
+//     projectId: projectId
+// });
+// const bucketName = 'poc_of_vision';
+
+
 
 /* CLIENT-SIDE JS*/
 $(document).ready(function() {
     //sanity check!
     console.log('app.js loaded!');
 
+
+    //On click listener for log in (sign in) button
+    $('#log-in-btn').on('click', function() {
+        hideAll();
+        $('#log-in-panel').show();
+    });
+    //On click listener for create button(sign up)
+    $('#create-btn').on('click', function() {
+        hideAll();
+        $('#create-form-panel').show();
+    });
+    //On click listener for update pic button
+    $('#update-pic-btn').on('click', function() {
+        $('#new-pic').show();
+    });
+    //On submit listener for submitting new account data
+    $('#create-form').on('submit', createFormOnSubmit);
+    //On submit listener for submitting log in request
+    $('#log-in-submit').on('submit', logInOnSubmit);
+    //On click listener for logging out.
+    $('#log-out-btn').on('click', logOut);
+    //On submit listener for updating current pic/creating new pic history
+    $('#update-pic').on('submit', updatePic);
+
+
     //initiate page 
     hideAll();          //hide panel (doesn't incl jumbotron)
-    $('.jumbotron').show();
-    $('#built-in-content').show();
+    $('.jumbotron').hide();
+    $('#built-in-content').hide();
     let isLogIn = false;
 
     //COOKIE LOG IN START
     let userCookie = getCookie("I_SEE_ME_ID");
-    // console.log("userCookie: ", userCookie);
     if (userCookie) {
         $.ajax({
             method: 'GET',
             url: '/profile/cookie',
             data: userCookie,
             success: logInProfile,
-            error: handleError
+            error: logInError
         })
-        // console.log("after getting profile with cookie log in!!")
     } else {
         logOut();
     }
 
-    //This function handles all the error occured in ajax
-    function handleError(a, b, c) {
-        console.log(a, b, c);
+    function logInError(a,b,c) {
+        logOut();
+        console.log(a,b,c);
     }
-
-    //On click listener for log in (sign in) button
-    $('#log-in-btn').on('click', function() {
-        hideAll();
-        $('#log-in-panel').show();
-    })
-
-    //On click listener for create button(sign up)
-    $('#create-btn').on('click', function() {
-        hideAll();
-        $('#create-form-panel').show();
-    })
-
-    //On click listener for update pic button
-    $('#update-pic-btn').on('click', function() {
-        $('#new-pic').show();
-    })
 
     //If log in error, console log the error. If success, create cookie, and log in the recommendation page
     function logInProfile(json) {
@@ -79,23 +105,6 @@ $(document).ready(function() {
         }
     }
 
-    //Call this to show/hide buttons when log in statement changes
-    function navBarToggle(loggedIn) {
-        if (loggedIn) {
-            $('#log-in-btn').hide();
-            $('#create-btn').hide();
-            $('#log-out-btn').show();
-            $('#update-pic-btn').show();
-            // isLogIn = true;
-        } else {
-            $('#log-in-btn').show();
-            $('#create-btn').show();
-            $('#log-out-btn').hide();
-            $('#update-pic-btn').hide();
-            // isLogIn = false;
-        }
-    }
-
     //Reinitialize the page and kill cookie
     function logOut() {
         killCookie();
@@ -103,26 +112,8 @@ $(document).ready(function() {
         $('.jumbotron').show();
         $('#built-in-content').show();
         navBarToggle(false);
- //       homepageChart();
     }
-
-    //Render recommendation page
-    function doReflections(userProfile) {
-        summaryAllPics.joy = 0;
-        summaryAllPics.sorrow = 0;
-        summaryAllPics.surprise = 0;
-        summaryAllPics.anger = 0;
-        summaryAllPics.people = 0;
-        summaryAllPics.landmarks = 0;
-        summaryAllPics.features = 0;
-        scoreAllPics = 0;
-
-        hideAll();
-        getUserData();
-        $('#user-name').text(getFirstName(userProfile.name));
-        $('#recommendation').show();
-    }
-
+ 
     //Send GET request to server. If logged in successfully, go to recommendation page
     function logInOnSubmit(e) {
         e.preventDefault();
@@ -136,16 +127,6 @@ $(document).ready(function() {
         })
         console.log("get request!!!log in!!")
     }
-
-    //On submit listener for submitting new account data
-    $('#create-form').on('submit', createFormOnSubmit);
-    //On submit listener for submitting log in request
-    $('#log-in-submit').on('submit', logInOnSubmit);
-    //On click listener for logging out.
-    $('#log-out-btn').on('click', logOut);
-    //On submit listener for updating current pic/creating new pic history
-    $('#update-pic').on('submit', updatePic);
-
 
     //Send POST request to server. If new account created, go to recommendation page
     function createFormOnSubmit(e) {
@@ -176,6 +157,41 @@ $(document).ready(function() {
             isLogIn = true;
             navBarToggle(true);
         }
+    }
+
+    //Call this to show/hide buttons when log in statement changes
+    function navBarToggle(loggedIn) {
+        if (loggedIn) {
+            $('#log-in-btn').hide();
+            $('#create-btn').hide();
+            $('#log-out-btn').show();
+            $('#update-pic-btn').show();
+            // isLogIn = true;
+        } else {
+            $('#log-in-btn').show();
+            $('#create-btn').show();
+            $('#log-out-btn').hide();
+            $('#update-pic-btn').hide();
+            // isLogIn = false;
+        }
+    }
+
+
+    //Render recommendation page
+    function doReflections(userProfile) {
+        summaryAllPics.joy = 0;
+        summaryAllPics.sorrow = 0;
+        summaryAllPics.surprise = 0;
+        summaryAllPics.anger = 0;
+        summaryAllPics.people = 0;
+        summaryAllPics.landmarks = 0;
+        summaryAllPics.features = 0;
+        scoreAllPics = 0;
+
+        hideAll();
+        getUserData();
+        $('#user-name').text(getFirstName(userProfile.name));
+        $('#recommendation').show();
     }
 
     //Send GET request to retrieve all pic history of current user
@@ -384,10 +400,13 @@ $(document).ready(function() {
     }
 
     function showCurated() {
+        userPics.sort(function(a, b){return b.score - a.score});
+        var limit = userPics.length>MAXCURATED ? MAXCURATED : userPics.length;
+
         var bigOlString = '<table border="0">';
-        for (var j=0; j<userPics.length; j++) {
+        for (var j=0; j<limit; j++) {
             // console.log('---------');
-            if (userPics[j].score!=0) {
+            // if (userPics[j].score!=0) {
               bigOlString += `
               <tr>
                 <td>
@@ -399,9 +418,10 @@ $(document).ready(function() {
                 <p>${userPics[j].time}</p>
                 </td>
               </tr>`
-            }
+            // }
         }
         bigOlString += '</table>';
+        $('#curatedMax').text(MAXCURATED);
         $('#curated').html(bigOlString);
     }
 
@@ -409,22 +429,16 @@ $(document).ready(function() {
     function updatePic(e) {
         e.preventDefault();
         
-        console.log("FORM1",e);
-        console.log("FORM2",$(this).serialize());
-        var file = document.forms['update-pic']['filetoupload'].files[0];
-        console.log("FORM3",file.name);
-        //file.name == "photo.png"
-        //file.type == "image/png"
-        //file.size == 300821
-        console.log("FORM4",$('input[type=file]').val());
-        console.log("FORM4b", $('#filetoupload').val());
+        var filename = $('#filetoupload').val();
+        var title    = $('#picTitle').val();
+        console.log("$$Form",filename,title);
 
-        var filename = `filename=${encodeURI($('#filetoupload').val())}`;
-        var title = `${$(this).serialize()}`;
+        var filename  = `filename=${encodeURI(filename)}`;
+        var title     = `${$(this).serialize()}`;
         var t = Date();
         timeSerialize = `time=${encodeURI(t)}`;
         requestData = `${filename}&${title}&${timeSerialize}&userId=${currentUser.userId}`;
-        console.log("FORM5",requestData);
+        console.log("$$Request data",requestData);
 
         $.ajax({
             method: 'POST',
@@ -435,200 +449,81 @@ $(document).ready(function() {
         })
     }
 
+    //Send PUT request, change current pic in profile, create new pic history data, then refresh page
+    function updatePic1(e) {
+        e.preventDefault();
+        
+        // console.log("FORM1",e);
+        // console.log("FORM2",$(this).serialize());
+        // var file = document.forms['update-pic']['filetoupload'].files[0];
+        // console.log("FORM3",file.path);
+        //file.name == "photo.png"
+        //file.type == "image/png"
+        //file.size == 300821
+        // console.log("FORM4",$('input[type=file]').val());
+        // var filename = $('#filetoupload').val();
+        // console.log("FORM4b", filename);
+
+        var filename = $('#filetoupload').val();
+        var title    = $('#picTitle').val();
+        console.log("$$Form",filename,title);
+        // var title = e.body.req.picTitle;
+        // console.log("$$About to store",title,filename);
+
+  // var filename = req.body.filename;
+  // var title = req.body.title;
+  // var time = req.body.time;
+  // var userId = req.body.userId;
+
+  // console.log (filename,title,time,userId);
+
+  // var x = filename.lastIndexOf('\\');
+  // // console.log(x);
+  // justFilename = filename.substr(x+1);
+  // // console.log(filename);
+  // var filename = __dirname + '/../tempPics/' + justFilename;
+  // console.log("CONT1",filename);
+
+  storage
+    .bucket(bucketName)
+    .upload(filename)
+    .then(() => {
+      // addPicToDb(justFilename,title,time,userId);
+      // res.send(`${justFilename} uploaded to ${bucketName}.`);
+      console.log("SUCCESS",`${justFilename} uploaded to ${bucketName}.`);
+    })
+    .catch(err => {
+      console.error('ERROR upload pic to cloud',err);
+    });
+
+
+
+        // var filename  = `filename=${encodeURI(filename)}`;
+        // var title     = `${$(this).serialize()}`;
+        // var t = Date();
+        // timeSerialize = `time=${encodeURI(t)}`;
+        // requestData = `${filename}&${title}&${timeSerialize}&userId=${currentUser.userId}`;
+        // console.log("$$Request data",requestData);
+
+        // $.ajax({
+        //     method: 'POST',
+        //     url: `/pic/fileupload`,
+        //     data: requestData,
+        //     success: updatedPic,
+        //     error: handleError
+        // })
+    }
+
     function updatedPic() {
         $('#new-pic').hide();
+        //I know this is a kludge!!!!
         setTimeout(doReflections(currentUser),6000);
+        setTimeout(doReflections(currentUser),12000);
     }
 
-//---------
-//On click listener for update fitness goal button
-    // $('#update-goal-btn').on('click', function() {
-    //     $('#show-goal').hide();
-    //     $('#new-goal').show();
-    // })
-
-//On submit listener for updating current preferences
-    $('#update-goal').on('submit', updateGoal);
-
-// //Send GET request to server and retrieve all profile data
-//     function homepageChart(){
-//       $.ajax({
-//         method: 'GET',
-//         url: '/profile/all',
-//         success: homepageChartOnSuccess,
-//         error: handleError      
-//       })
-//     }
-//Draw scatter chart in homepage using the returned profile data
-    // function homepageChartOnSuccess(json){
-    //   drawScatter(json);
-    // }
-
-//Send PUT request, change current fitness goal, then refresh the recommendation page
-    function updateGoal(e) {
-        e.preventDefault();
-        requestData = `${$(this).serialize()}&userId=${currentUser.userId}`;
-        $.ajax({
-            method: 'PUT',
-            url: `/profile/goal`,
-            data: requestData,
-            success: logInProfile,
-            error: handleError
-        })
-    }
-
-// //Draw the BMI chart
-//     function drawBMI(bmiIn) {
-//         google.charts.setOnLoadCallback(drawChart);
-
-//         function drawChart() {
-//             var data = google.visualization.arrayToDataTable([
-//                 ['Label', 'Value'],
-//                 [bmiIn.bmiStr, bmiIn.bmi],
-//             ]);
-//             var options = {
-//                 width: 400,
-//                 height: 250,
-//                 redFrom: 25,
-//                 redTo: 40,
-//                 greenFrom: 18,
-//                 greenTo: 25,
-//                 yellowFrom: 0,
-//                 yellowTo: 18,
-//                 minorTicks: 5,
-//                 max: 35,
-//                 min: 12,
-//                 yellowColor: 'yellow'
-//             };
-//             var chart = new google.visualization.Gauge(document.getElementById('bmi-chart'));
-//             chart.draw(data, options);
-//         }
-//     }
-
-//Draw a age/pic scatter chart. Blue dots represent male, and pink represent female
-//     function drawScatter(scatterDS) {
-//       google.charts.setOnLoadCallback(drawChart);
-//       function drawChart(){
-//         var dataArray = [['Age', 'Pic', {role:'style'} ]];
-//         for (var j=0; j<scatterDS.length; j++) {
-//             var age = parseInt(scatterDS[j].age);
-//             var pic = parseInt(scatterDS[j].pic);
-//             var gender = scatterDS[j].gender.toLowerCase();
-//             var genderColor = gender[0]==='m' ? 'blue' : 'pink';
-//             var babyArray = [age, pic, 'point { fill-color: ' + genderColor];
-//             dataArray.push(babyArray);
-//          }
-//         var data = google.visualization.arrayToDataTable(dataArray);
-//         var options = {
-//             title: 'Fitness Guru Community',
-//             pointSize: 7,
-//             legend: 'none',
-//             height: 250, width: 520, 
-//             hAxis: {title: 'Age'},
-//             vAxis: {title: 'Pic'}
-//         };
-//         var chart = new google.visualization.ScatterChart(document.getElementById('scatterDiv'));
-//         chart.draw(data, options);
-//     }   }
-// //Draw the pic history chart of current user
-//     function drawPic(picIn) {
-//         google.charts.setOnLoadCallback(drawChart);
-//         function drawChart() {
-//             var dataArray = [
-//                 ['Date', 'Pic']
-//             ];
-//             for (var j = 0; j < picIn.length; j++) {
-//                 var shortTime = picIn[j].time.substr(4, 6);
-//                 shortTime[3] = '-';
-//                 var babyArray = [shortTime, parseInt(picIn[j].pic)]
-//                 dataArray.push(babyArray);
-//             }
-//             var data = google.visualization.arrayToDataTable(dataArray);
-//             var options = {
-//                 title: 'Pic History (lbs)',
-//                 curveType: 'function',
-//                 pointSize: 7,
-//                 series: {
-//                     0: { pointShape: 'diamond' }
-//                 },
-//                 legend: {
-//                     position: 'none'
-//                 },
-//                 height: 250,
-//                 width: 520
-
-//             };
-//             var chart = new google.visualization.LineChart(document.getElementById('pic-chart'));
-//             chart.draw(data, options);
-//         }
-//     }
-
-//Check if current user is an administrator.
-//If true, render admin dashboard. If false, do nothing.
-    // function checkAdmin(userIdIn){
-    //   var isAdmin = false;
-    //   for(var i=0; i<adminArray.length; i++){
-    //     if(userIdIn===adminArray[i]){
-    //       isAdmin = true;
-    //       break;
-    //     }
-    //   }
-    //   if(isAdmin){
-    //     renderDashboard();
-    //   }
-    // }
-
-//Render dashboard(if user is an admin)
-    // function renderDashboard(){
-    //   $('#admin-panel').show();
-    //   $.ajax({
-    //     method: 'GET',
-    //     url: `profile/all/dashboard`,
-    //     success: getDashboardOnSuccess,
-    //     error: handleError
-    //   })
-    // }
-
-    // function getDashboardOnSuccess(json){
-    //   console.log(json);
-    //   $('#db1').text(json.totalUser);
-    //   $('#db2').text(json.totalPic);
-    //   $('#db3').text(json.male);
-    //   $('#db4').text(json.female);
-    //   $('#db5').text(json.other);
-    //   $('#db6').text(json.avgPic);
-    // }
-
-//Render recommendation page
-    // function doReflections1(userProfile) {
-    //     getUserData();
-    //     userProfile.inch = parseInt(userProfile.inch);
-    //     userProfile.feet = parseInt(userProfile.feet);
-    //     userProfile.pic = parseInt(userProfile.pic);
-    //     hideAll();
-    //     checkAdmin(userProfile.userId);
-    //     $('#recommendation').show();
-    //     $('#show-goal').show();
-    //     $('#new-goal').hide();
-    //     $('#show-pic').show();
-    //     $('#new-pic').hide();
-    //     var userPound = parseInt(userProfile.pic);
-    //     // This is gonna return {'bmi':bmi,'bmiStr':bmiStr}
-    //     var bmiObj = calcBMI(userProfile);
-    //     drawBMI(bmiObj);
-    //     var recObj = profileToRecomm(userProfile, bmiObj);
-    //     $('#rec-resistance').html(recObj.resistance);
-    //     $('#rec-cardio').html(recObj.cardio);
-    //     $('#rec-nutrition').html(recObj.nutrition);
-    //     $('#user-name').text(getFirstName(userProfile.name));
-    //     $('#picSpan').text(userPound);
-    //     $('#goalSpan').text(userProfile.fitnessGoal.toUpperCase());
-    // }
 
 
-
-    //---------------------------------
-        //Hide all layouts in panel-body
+    //Hide all layouts in panel-body
     function hideAll() {
         $('#built-in-content').hide();
         $('#create-form-panel').hide();
@@ -677,3 +572,9 @@ $(document).ready(function() {
     }
 
 });
+
+
+//This function handles all the error occured in ajax
+function handleError(a, b, c) {
+    console.log(a, b, c);
+}
