@@ -48,7 +48,7 @@ Fitness Guru uses the following technologies:
 ## Planned Features
 
 * Allow delete of pics is Reflections view
-* Allow update of entire profile; show current pics for user
+* Allow update/delete of entire profile
 * Get filter & preferences working on Profile
 * Speed up refresh
 * Show location (map) for Landmarks
