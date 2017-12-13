@@ -1,6 +1,10 @@
 // require express and other modules
 var express = require('express');
 var app = express();
+// const formidable = require('express-formidable');
+
+//formidable middleware
+// app.use(formidable());
 
 // parse incoming urlencoded form data
 // and populate the req.body object
@@ -63,19 +67,6 @@ app.get('/pic', controller.pic.getPicHistory);
 //POST request for file upload
 app.post('/pic/fileupload', controller.pic.fileUpload);
 
-//--------------------
-
-//PUT request for updating user profile.
-//app.put('/profile/update', controller.profile.update);
-
-//GET request for all profiles.
-app.get('/profile/all', controller.profile.getAll);
-
-//GET request for all profile(for the admin dashboard).
-app.get('/profile/all/dashboard', controller.profile.getDashboard);
-
-//PUT request for adding user pic in his Profile data and add a pic data history.
-//app.put('/profile/pic', controller.profile.addPic);
 
 
 /**********

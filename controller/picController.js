@@ -104,6 +104,8 @@ function updateMeta(picRecord,metaData) {
 
 
 function fileUpload(req,res) {
+  console.log("@@1-fileUpload");
+
   var filename = req.body.filename;
   var title = req.body.title;
   var time = req.body.time;
@@ -112,11 +114,9 @@ function fileUpload(req,res) {
   console.log (filename,title,time,userId);
 
   var x = filename.lastIndexOf('\\');
-  // console.log(x);
   justFilename = filename.substr(x+1);
-  // console.log(filename);
   var filename = __dirname + '/../tempPics/' + justFilename;
-  console.log("CONT1",filename);
+  console.log("@@1-next",filename);
 
   storage
     .bucket(bucketName)
@@ -131,43 +131,8 @@ function fileUpload(req,res) {
     });
 }
 
-function fileUpload1(req,res) {
-  console.log("CONT2",req.body);
-
-  var form = new formidable.IncomingForm();
-  form.parse(req, function (err, fields, files) {
-      console.log("1",err);
-      console.log("2",fields);
-      console.log("3",files);
-      // var oldpath = files.filetoupload.path;
-      // var newpath = 'C:/Users/Your Name/' + files.filetoupload.name;
-      // fs.rename(oldpath, newpath, function (err) {
-      //   if (err) throw err;
-      //   res.write('File uploaded and moved!');
-      //   res.end();
-  });
-
-
-
-  // var form = new formidable.IncomingForm();
-  // form.parse(req)
-  //   .on('file', function(name, file) {
-  //       console.log('Got file:', name);
-  //   })
-  //   .on('field', function(name, field) {
-  //       console.log('Got a field:', name);
-  //   })
-  //   .on('error', function(err) {
-  //       next(err);
-  //   })
-  //   .on('end', function() {
-  //       res.end();
-  //   });
-
-}
-
 function addPicToDb(filename,title,time,userId) {
-  console.log("PIC UPLOADED NOW ADDING TO DB", filename);
+  console.log("@@2-PIC UPLOADED NOW ADDING TO DB", filename);
   var newPic = new db.Pic({
     pic: 'https://storage.googleapis.com/' + bucketName + '/' + filename,
     title: title,

@@ -1,16 +1,24 @@
-# Fitness Guru
+# I See Me
 
-*Brought to you by the team of Sherwin Shann and Tahl Milburn.*
+*Brought to you by Tahl Milburn.*
 
-Fitness Guru is a straightforward app for giving basic fitness recommendations based on a user's profile.  
+*I See Me* automatically curates those pictures that represent your most important moments.
 
-Before the user creates a profile or logs-in, Fitness Guru shows the user a basic infographic of the entire Fitness Guru user community in a scatterchart.  The chart shows all users by age vs. weight and their gender.
+It does this by analyzing your pictures and selecting those with the highest experiential value.
 
-When a new user wants to use the system, a new profile is created.  From that, a BMI and an assessment will be calculated based on the user's height and weight.  The website will also calculate fitness recommendations are based on whether the user would like to build strength, build muscle or simply be in great condition.  Those recommendations include resistance training, cardio and nutrition.  Added that, and based on the user's BMI, the recommendations might also include a recommendation to gain or lose weight.  The recommendations also include links to third-party sources.
+Cognitive science tells us that experiential value is highest when something is beyond the routine.  In particular, in the presense of novelty and emotion.
+                    
+*I See Me* is powered by the Google Vision image AI engine to discover:
 
-Once a profile has been established, the user can periodically update his or her weight and it will recalculate the BMI and change the recommendations as appropriate.  A weight history graph is also shown to the user.
+* Landmarks - Personal photographs of landmarks are often both novel and emotional.
 
-You can use this application at [Sherwin Shann](https://agile-dawn-93693.herokuapp.com/ "Sherwin's Heroku") or at [Tahl Milburn](https://quiet-harbor-68780.herokuapp.com/ "Tahl's Heroku").
+* Microexpressions - Four of the basic emotions can be detected.
+
+* Entity features - Although these don't have much experiential value, features provide context.
+
+Best of all, this discovery is automatic.  You just provide the photographs!
+
+You can use this application at [Tahl Milburn](https://tbd.herokuapp.com/ "Tahl's Heroku").
 
 
 ## Technologies Used
@@ -18,7 +26,7 @@ You can use this application at [Sherwin Shann](https://agile-dawn-93693.herokua
 Fitness Guru uses the following technologies:
 
 * Javascript with Ajax, Bootstrap, JQuery
-* Google Charts (API)
+* Google Vision (API): Face, Landmark, Labels module
 * Google Fonts
 * Node.js and Express
 * BCrypt
@@ -27,17 +35,25 @@ Fitness Guru uses the following technologies:
 
 ## Existing Features
 
-Fitness Guru has several features:
-* Nice charting to communicate to the user
-* Dynamic updates of all features (single-page app)
-* Cookies to remember a user's login (30 day expiration)
-* Password encryption (no storage of passwords in the clear!)
-* Basic dashboard -- only available to app creators
-* Cool font!
+*I See Me* has several features:
+
+* Can recognize up to 4 microexpressions in faces
+* Can recognize landmarks from a knowledgebase of over 8000 images
+* Can identify thousands of features within images
+* Can calculate rough experiential value based on entity identification
+* Curates pictures with the highest experiential value
 
 
 ## Planned Features
 
-We've thought about some possible future features:
-* Calculate BMR (Basil Metabolic Rate) and gather activity info to calulated calorie consumption
-* Enhanced dashboard
+* Get filter & preferences working on Profile
+* Refresh after fetch
+* Speed up refresh
+* Allow update of entire profile; show current pics for user
+* Allow delete of pics is Reflections view
+* Show location (map) for Landmarks
+* Do Safe Search as one of things searched in (depending on user preference)
+* Allow user to assign valence to any pic; store in database; use in scoring
+* Somehow sharing user's curated pictures with others
+* Find most common features and doing something with it
+* Find & do something with underExposed and blurry pics

@@ -2,33 +2,11 @@
 let currentUser = {};
 //this is a summary of across all the pics
 let summaryAllPics = {};
-let scoreAllPics = 0;
+let scoreAllPics;
 //array of all pics objects for user
 let userPics = [];
 const THRESH = 0.65;        //confidence threshold on recogition
 const MAXCURATED = 5;
-
-//Google Cloud stuff
-// const Storage = require('@google-cloud/storage');
-// const cred = {
-//   "type": "service_account",
-//   "project_id": "i-see-me-188119",
-//   "private_key_id": "98dc71f42b1e0277098961ca1e2e6400de3c8a1c",
-//   "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCktzq69TbENkPY\nVnoMKxmokDRPWBOiyl8f47/ICLJYXvqZfj8PckS0wnp1soHSoO7Dazwp3WFJYQ3Y\nSUbQ2Yj5hQvjiLtJf6o927UDibMSpn2wSSv5X39x4sr7s6mvQiyTlUGa0kj5vjxM\nUkDBoWi8074tgAxU/pS1ZJL+2sHInkR1Pltrx+YruDQIdHhH3LSwG3ER3eOANVFd\n7yJXhYcmGzKZ62clxgaa/4h3GfkF2zJBLJ/tJMB4a8Rx5uGmk1gKfO05UlcAUYyF\nDxszGFJBq6DeuEmAPXpx+ktcXQT+tvPQ1a2X/uvU0A+0BP8LoNNkJ5eW7SuTHYKG\nfJz9eyC9AgMBAAECggEAGH4KZJxrzVdIVVXehgquoQr4TEgLe2xeIq7J6KOqaUuO\nNd6438IdB0fXz8KAXWKCvlomsw7xFWkyFtQmjI2cOYYYE3hUaQRruxD9ZI5IK2DI\nVbs7p7QUjkmr5yt68s2DNVq/S5czNLed3bdpW6F1ooZVxAxDSSwlzqcq2GyM3hi1\nQEbDA1fYidrbdsDe+cNwe6a1uLL1Kbh0ge+iPtzNV83Tjisb9VVSJiq0bSnK52c+\nUMkTxsSQQP5brNUZstVdbtMkjmqZLTMeGdWBJOUeskqMKXJ8ywctwZGbhq3CZr7C\ngvJFxMHfKZfecUysmM+0Qs74T8V+kc1nHnyTN/8c/QKBgQDhABLw3qf4QPX465xb\nueZZ/G8eeIMh3wbSvRH2EEoq9wHHlSdsXKu/Etv8OwF8lMcqpM06kSG7/l0MZFUS\n1wmyfBtyWxzLYuxJ2YY6RKepEHep9eccxuueYNpI1yTH4I284ScpQaiem/7SaAYZ\nJVPiCHxXnhIzvyRvycxvXrZnMwKBgQC7aN/83ytVZuZX95xoP2eLdNScYWG/bnAw\ni0Qy2+RSlF2ACN9ZehNU3TRfBxqB0md/HJykfXHFTzH7Wffg8EtoBvHFOS19v+gM\n3uBboKXk+L4bHAa7kOQi0X1lk5urC0TKje/pAK4z6W3Ol1WrkVX6TXol+MFfTBsY\nQbNdVmmYTwKBgQCppMmjLO3OgwQyc0sH6elhbbBGdCzC7AqT+BRDx9J0BJsl5TK9\nRD4GKe0Nh1u+l9p3L5zBjM23lbiIcFmog9P+7A4xsbrLKsHniIfpBPy4vv7KeeqQ\nSvc6CeJrSzOjNI8Jm2VQeP3u4MVH1UDL0tYlNaqy0S7+Lx8E3k0yp2G1+wKBgQCM\nrNqFjFeQ0Z7SJVHIht+ItPfrMsYW1iVsqv1UV+75ddkBhKdzGMluCGWJd2GUVYXO\nyoFij69Y9muESzJgLL/NpHjTHGpjXCwpjRtIbDxatcStwMnk/Yvh/vJrzvMo31qR\n2R1e/13EJdKBIuPx1zR8oK+x1RoCGLS17ote4sB8zQKBgGF3+32MEGMMqhehk9R5\nddECroFbYRg2gtekrSkn3uMjMYhOeGjY3gyG4lD3B4l1or8CLCRrk1ldZqoFV6J3\nRozNJg5RcxmBJ+zIXOlK6pZDU29NSGQyr4uuASgzWHZeaM8UAzw1CgdyOkXcR129\n5mxfY6+kFJpGEX/e3EFHZJ09\n-----END PRIVATE KEY-----\n",
-//   "client_email": "i-see-me@i-see-me-188119.iam.gserviceaccount.com",
-//   "client_id": "103437408985285771731",
-//   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-//   "token_uri": "https://accounts.google.com/o/oauth2/token",
-//   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-//   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/i-see-me%40i-see-me-188119.iam.gserviceaccount.com"
-// }
-// const projectId = 'i-see-me-188119'; 
-// const storage = new Storage({
-//     credentials: cred,
-//     projectId: projectId
-// });
-// const bucketName = 'poc_of_vision';
-
 
 
 /* CLIENT-SIDE JS*/
@@ -70,6 +48,7 @@ $(document).ready(function() {
     //COOKIE LOG IN START
     let userCookie = getCookie("I_SEE_ME_ID");
     if (userCookie) {
+        console.log("there was cookie");
         $.ajax({
             method: 'GET',
             url: '/profile/cookie',
@@ -78,16 +57,19 @@ $(document).ready(function() {
             error: logInError
         })
     } else {
+        console.log("there was NO cookie");
         logOut();
     }
 
     function logInError(a,b,c) {
+        console.log("LOGINERROR");
         logOut();
         console.log(a,b,c);
     }
 
     //If log in error, console log the error. If success, create cookie, and log in the recommendation page
     function logInProfile(json) {
+        console.log("LOGIN");
         if (json === "login error") {
             console.log(json, "inside login error");
             alert("Oops! Wrong id or password");
@@ -95,6 +77,7 @@ $(document).ready(function() {
             console.log("cookie fail");
             console.log("cookie: ", userCookie);
         } else {
+            console.log("LOGIN SUCCESS");
             // console.log(json, "inside render");
             setCookie("I_SEE_ME_ID", `userId=${json.userId}`, 30);
             currentUser = json;
@@ -107,6 +90,7 @@ $(document).ready(function() {
 
     //Reinitialize the page and kill cookie
     function logOut() {
+        console.log("LOGOUT");
         killCookie();
         hideAll();
         $('.jumbotron').show();
@@ -151,6 +135,8 @@ $(document).ready(function() {
         } else {
             console.log(json, "inside render");
             setCookie("I_SEE_ME_ID", `userId=${json.userId}`, 30);
+            $('.jumbotron').hide();
+            $('#built-in-content').hide();
             currentUser = json
             doReflections(currentUser);
             console.log("currentUser: ", currentUser);
@@ -179,6 +165,7 @@ $(document).ready(function() {
 
     //Render recommendation page
     function doReflections(userProfile) {
+        console.log("$$0-doReflections",Date());
         summaryAllPics.joy = 0;
         summaryAllPics.sorrow = 0;
         summaryAllPics.surprise = 0;
@@ -207,6 +194,7 @@ $(document).ready(function() {
     
     //ParseInt pic data, then draw the pic history chart of current user
     function getPicOnSuccess(jsonList) {
+        console.log("$$0-getPicOnSuccess");
         userPics = [];      //clear array
         for (var j=0; j<jsonList.length; j++) {
             userRec  = {};      //establish a record
@@ -224,20 +212,24 @@ $(document).ready(function() {
     }
 
     function showAllPics() {
+        userPics.sort(function(a,b) { return new Date(a.time).getTime() - new Date(b.time).getTime() } );
+
         var bigOlString = '<table border="0">';
         for (var j=0; j<userPics.length; j++) {
             // console.log('---------');
             bigOlString += `
               <tr>
                 <td>
+                    <a href="${userPics[j].pic}" 
+                    alt="${userPics[j].title}" target="_blank">
                     <img src="${userPics[j].pic}" 
-                    height="230">
+                    height="230" class="snapshot"></a>
                 </td>
                 <td>
                 <h3>"${userPics[j].title}"</h3>
                 <p>${userPics[j].time}</p>
                 ${dispMeta(userPics[j].meta)}
-                <p>Experience value: ${userPics[j].score}</p>
+                <p><span class="picExpVal">Experience value: ${userPics[j].score}</span></p>
                 </td>
               </tr>`
         }
@@ -261,7 +253,7 @@ $(document).ready(function() {
                     var line = "LM2" + land[j].description; 
                     // console.log(line);
                     list.push(line);
-                    var line = "XX0" + land[j].locations[0].latLng.latitude.toString() + "," + land[j].locations[0].latLng.longitude.toString();
+                    var line = "XL0" + land[j].locations[0].latLng.latitude.toString() + "," + land[j].locations[0].latLng.longitude.toString();
                     // console.log("$$$",line);
                     list.push(line);
                     summaryAllPics.landmarks++;
@@ -368,6 +360,8 @@ $(document).ready(function() {
                         returnString += `<p>Person expressing sorrow</p>`;
                     } else if (twoCode==="FH") {
                         returnString += `<p>Person wearing headwear</p>`;
+                    } else if (twoCode==="XL") {
+                        returnString += `<p>Location at <span class="locacoord">${metaArray[j].substr(3)}</span></p>`; 
                     } else if (twoCode==="XX") {
                         if (!metaStr) {
                             var metaStr = "Features: " + metaArray[j].substr(3);
@@ -398,24 +392,28 @@ $(document).ready(function() {
         <h3>Combined experience value: ${scoreAllPics}</h3>`
         $('#summary').html(showStr);
     }
+// recent.sort(function(a,b) { return new Date(a.start).getTime() - new Date(b.start).getTime() } );
 
     function showCurated() {
-        userPics.sort(function(a, b){return b.score - a.score});
-        var limit = userPics.length>MAXCURATED ? MAXCURATED : userPics.length;
+        var curaPics = userPics.slice();
+        curaPics.sort(function(a, b){return b.score - a.score});
+        var limit = curaPics.length>MAXCURATED ? MAXCURATED : curaPics.length;
 
         var bigOlString = '<table border="0">';
         for (var j=0; j<limit; j++) {
             // console.log('---------');
-            // if (userPics[j].score!=0) {
+            // if (curaPics[j].score!=0) {
               bigOlString += `
               <tr>
                 <td>
-                    <img src="${userPics[j].pic}" 
-                    height="150">
+                    <a href="${curaPics[j].pic}" 
+                    alt="${curaPics[j].title}" target="_blank">
+                    <img src="${curaPics[j].pic}" 
+                    height="150" class="snapshot"></a>
                 </td>
                 <td>
-                <h3>"${userPics[j].title}"</h3>
-                <p>${userPics[j].time}</p>
+                <h3>"${curaPics[j].title}"</h3>
+                <p>${curaPics[j].time}</p>
                 </td>
               </tr>`
             // }
@@ -427,6 +425,7 @@ $(document).ready(function() {
 
     //Send PUT request, change current pic in profile, create new pic history data, then refresh page
     function updatePic(e) {
+        console.log("$$1-updatePic");
         e.preventDefault();
         
         var filename = $('#filetoupload').val();
@@ -445,80 +444,29 @@ $(document).ready(function() {
             url: `/pic/fileupload`,
             data: requestData,
             success: updatedPic,
-            error: handleError
+            error: noUpdatedPic
         })
     }
 
-    //Send PUT request, change current pic in profile, create new pic history data, then refresh page
-    function updatePic1(e) {
-        e.preventDefault();
-        
-        // console.log("FORM1",e);
-        // console.log("FORM2",$(this).serialize());
-        // var file = document.forms['update-pic']['filetoupload'].files[0];
-        // console.log("FORM3",file.path);
-        //file.name == "photo.png"
-        //file.type == "image/png"
-        //file.size == 300821
-        // console.log("FORM4",$('input[type=file]').val());
-        // var filename = $('#filetoupload').val();
-        // console.log("FORM4b", filename);
-
-        var filename = $('#filetoupload').val();
-        var title    = $('#picTitle').val();
-        console.log("$$Form",filename,title);
-        // var title = e.body.req.picTitle;
-        // console.log("$$About to store",title,filename);
-
-  // var filename = req.body.filename;
-  // var title = req.body.title;
-  // var time = req.body.time;
-  // var userId = req.body.userId;
-
-  // console.log (filename,title,time,userId);
-
-  // var x = filename.lastIndexOf('\\');
-  // // console.log(x);
-  // justFilename = filename.substr(x+1);
-  // // console.log(filename);
-  // var filename = __dirname + '/../tempPics/' + justFilename;
-  // console.log("CONT1",filename);
-
-  storage
-    .bucket(bucketName)
-    .upload(filename)
-    .then(() => {
-      // addPicToDb(justFilename,title,time,userId);
-      // res.send(`${justFilename} uploaded to ${bucketName}.`);
-      console.log("SUCCESS",`${justFilename} uploaded to ${bucketName}.`);
-    })
-    .catch(err => {
-      console.error('ERROR upload pic to cloud',err);
-    });
-
-
-
-        // var filename  = `filename=${encodeURI(filename)}`;
-        // var title     = `${$(this).serialize()}`;
-        // var t = Date();
-        // timeSerialize = `time=${encodeURI(t)}`;
-        // requestData = `${filename}&${title}&${timeSerialize}&userId=${currentUser.userId}`;
-        // console.log("$$Request data",requestData);
-
-        // $.ajax({
-        //     method: 'POST',
-        //     url: `/pic/fileupload`,
-        //     data: requestData,
-        //     success: updatedPic,
-        //     error: handleError
-        // })
+    function updatedPic() {
+        console.log("$$2-updatedPic");
+        $('#filetoupload').val('');
+        $('#picTitle').val('');
+        $('#new-pic').hide();
+        $('#waiting').html('<img src="../images/waiting.gif">');
+        //I know this is a kludge!!!!
+        setTimeout(function() {doReflections(currentUser);},6000);
+        setTimeout(function() {doReflections(currentUser); $('#waiting').empty(); },12000);
     }
 
-    function updatedPic() {
+    function noUpdatedPic(a,b,c) {
+        console.log("$$2-noUpdatedPic");
         $('#new-pic').hide();
+        $('#waiting').html('<img src="../images/waiting.gif">');
         //I know this is a kludge!!!!
-        setTimeout(doReflections(currentUser),6000);
-        setTimeout(doReflections(currentUser),12000);
+        setTimeout(function() {doReflections(currentUser);},6000);
+        setTimeout(function() {doReflections(currentUser); $('#waiting').empty(); },12000);
+        handleError(a,b,c);
     }
 
 
@@ -576,5 +524,5 @@ $(document).ready(function() {
 
 //This function handles all the error occured in ajax
 function handleError(a, b, c) {
-    console.log(a, b, c);
+    console.log("ERROR!", a, b, c);
 }

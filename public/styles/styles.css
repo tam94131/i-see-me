@@ -124,6 +124,25 @@ td {
     text-align: center;
 }
 
+.snapshot:hover {
+	height: 500px;
+}
+
+#waiting img {
+	height: 100px;
+	border-radius: 70%;
+}
+
+.locacoord {
+	text-shadow: 1px 1px 1px;
+}
+
+td .picExpVal {
+	font-weight: 400;
+/*	color: #ffa54f; */
+	color: lightblue;
+}
+
 a:hover {
      text-decoration:none;
      text-shadow: 1px 1px 1px #555;
