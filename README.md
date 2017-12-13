@@ -46,14 +46,13 @@ Fitness Guru uses the following technologies:
 
 ## Planned Features
 
-* Get filter & preferences working on Profile
-* Refresh after fetch
-* Speed up refresh
-* Allow update of entire profile; show current pics for user
 * Allow delete of pics is Reflections view
+* Allow update of entire profile; show current pics for user
+* Get filter & preferences working on Profile
+* Speed up refresh
 * Show location (map) for Landmarks
 * Do Safe Search as one of things searched in (depending on user preference)
 * Allow user to assign valence to any pic; store in database; use in scoring
 * Somehow sharing user's curated pictures with others
-* Find most common features and doing something with it
+* Find most common features, look-up context-free valence, add to score
 * Find & do something with underExposed and blurry pics
