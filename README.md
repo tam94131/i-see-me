@@ -26,7 +26,8 @@ You can use this application at [Tahl Milburn](https://tbd.herokuapp.com/ "Tahl'
 Fitness Guru uses the following technologies:
 
 * Javascript with Ajax, Bootstrap, JQuery
-* Google Vision (API): Face, Landmark, Labels module
+* Google Vision (API): Face, Landmark, Labels modules
+* Google Cloud (API)
 * Google Fonts
 * Node.js and Express
 * BCrypt
